@@ -655,7 +655,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
 <script>
 /* ========= STORE SETTINGS (edit these) ========= */
 const WA_NUMBER = "94767955951"; // Ceylonique WhatsApp, from ceylonique.lk (country code, no +)
-// Sizes and LKR prices (300g / 600g) as given by Ceylonique, 29 Oct 2026.
+// Sizes and LKR prices (300g / 600g) 300g retail prices updated 15 Nov 2026.
 const PRODUCTS = [
   { id:"original", name:"Original", line:"Original flavour. Original taste.",
     desc:"Smooth, rich and roasty. The everyday jar for toast, smoothies and straight-from-the-spoon.",
@@ -663,23 +663,23 @@ const PRODUCTS = [
     photo:"assets/original.webp",
     th:{ bg:"#44BE99", pop:"#FFF4C2", btn:"#44BE99", btnInk:"#0E3A2D" },
     jar:"#D9982A", label:"#44BE99", ink:"#0E3A2D", tint:"#D6F1E8", tintDark:"#143A2F",
-    sizes:[{w:"300g",p:1290},{w:"600g",p:2380}] },
+    sizes:[{w:"300g",p:1390},{w:"600g",p:2380}] },
   { id:"chocolate", name:"Chocolate", line:"New rich chocolate flavour.",
     desc:"Peanut butter meets real cocoa. Made for pancakes, roti and anyone with a sweet tooth.",
     tags:["sweet"], badge:"New",
     photo:"assets/chocolate.webp",
     th:{ bg:"#583397", pop:"#C9B3F0", btn:"#583397", btnInk:"#F5EEFF" },
     jar:"#6B3423", label:"#583397", ink:"#F5EEFF", tint:"#E4DBF3", tintDark:"#2A1D45",
-    sizes:[{w:"300g",p:1290},{w:"600g",p:2380}] },
+    sizes:[{w:"300g",p:1890},{w:"600g",p:2380}] },
   { id:"salted", name:"Salted", line:"Salted flavour for a salty taste.",
     desc:"A pinch of salt that brings out the roast. Perfect for sauces, dips and savoury snacks.",
     tags:["savoury","everyday","fitness"], badge:null,
     photo:"assets/salted.webp",
     th:{ bg:"#F7B56E", pop:"#FFE7C2", btn:"#F7B56E", btnInk:"#2A1608" },
     jar:"#C98A24", label:"#F18518", ink:"#2A1608", tint:"#FDE3C6", tintDark:"#3E2410",
-    sizes:[{w:"300g",p:1290},{w:"600g",p:2380}] }
+    sizes:[{w:"300g",p:1590},{w:"600g",p:2380}] }
 ];
-const TRIO = { id:"trio", name:"The Trio", w:"3 × 300g", p:3490 }; // bundle price; the site shows the saving against 3 single 300g jars
+const TRIO = { id:"trio", name:"The Trio", w:"3 × 300g", p:4390 }; // bundle price; the site shows the saving against 3 single 300g jars
 /* =============================================== */
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
