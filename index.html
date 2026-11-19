@@ -222,6 +222,9 @@ section.block{padding-block:72px 24px}
 .trio .price-col{text-align:right;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
 .trio .was{text-decoration:line-through;opacity:.65;font-weight:600;font-variant-numeric:tabular-nums}
 .trio .btn{background:var(--cocoa);color:var(--on-cocoa)}
+.trio-sizes{display:flex;gap:8px;margin-top:12px}
+.trio .size{color:var(--on-gold);border-color:var(--on-gold)}
+.trio .size[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
 @media (max-width:760px){.trio{grid-template-columns:1fr;text-align:left;padding:24px}.trio .price-col{align-items:flex-start;text-align:left}}
 
 /* how to enjoy */
@@ -467,7 +470,8 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
       <div>
         <p class="eyebrow" style="color:var(--on-gold);opacity:.75">Can't decide?</p>
         <h3>The Trio: try all three</h3>
-        <p>One jar each of Original, Chocolate and Salted, in the 300g size. The easiest way to find your favourite.</p>
+        <p>One jar each of Original, Chocolate and Salted, in your choice of 300g or 600g. The easiest way to find your favourite.</p>
+        <div class="trio-sizes" id="trioSizes" role="group" aria-label="Trio jar size"></div>
       </div>
       <div class="price-col">
         <div><span class="was" id="trioWas"></span>&nbsp; <span class="price" id="trioPrice"></span></div>
@@ -679,7 +683,7 @@ const PRODUCTS = [
     jar:"#C98A24", label:"#F18518", ink:"#2A1608", tint:"#FDE3C6", tintDark:"#3E2410",
     sizes:[{w:"300g",p:1770},{w:"600g",p:3540}] }
 ];
-const TRIO = { id:"trio", name:"The Trio", w:"3 × 300g", p:4950 }; // bundle price; the site shows the saving against 3 single 300g jars
+const TRIO = { id:"trio", name:"The Trio", sizes:[{w:"3 × 300g", g:"300g", p:4950},{w:"3 × 600g", g:"600g", p:9900}] }; // bundle prices; the site shows the saving against 3 single jars of the same size
 /* =============================================== */
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -729,7 +733,7 @@ const save = () => { try { localStorage.setItem("cq-cart", JSON.stringify(cart))
 const keyOf = (id, w) => id + "|" + w;
 
 function itemInfo(it){
-  if (it.id === "trio") return { name: TRIO.name, w: TRIO.w, p: TRIO.p, jarId:"original" };
+  if (it.id === "trio") { const z = TRIO.sizes.find(z => z.w === it.w) || TRIO.sizes[0]; return { name: TRIO.name, w: z.w, p: z.p, jarId:"original" }; }
   const p = byId(it.id), s = p.sizes.find(s => s.w === it.w) || p.sizes[0];
   return { name: p.name, w: s.w, p: s.p, jarId: p.id };
 }
@@ -790,10 +794,17 @@ function applyFilter(f){
 $$(".chip").forEach(c => c.addEventListener("click", () => applyFilter(c.dataset.filter)));
 
 /* trio */
-const trioWas = PRODUCTS.reduce((a,p)=>a+p.sizes[0].p,0);
-$("#trioPrice").textContent = fmt(TRIO.p);
-$("#trioWas").textContent = trioWas > TRIO.p ? fmt(trioWas) : "";
-$("#trioAdd").addEventListener("click", e => { addToCart("trio", TRIO.w, 1, $(".trio-jars")); burst(e.currentTarget); });
+let trioI = 0;
+function paintTrio(){
+  const z = TRIO.sizes[trioI];
+  const was = PRODUCTS.reduce((a,p)=>a+p.sizes.find(x=>x.w===z.g).p,0);
+  $("#trioPrice").textContent = fmt(z.p);
+  $("#trioWas").textContent = was > z.p ? fmt(was) : "";
+  $("#trioSizes").innerHTML = TRIO.sizes.map((x,i)=>`<button class="size" type="button" data-ti="${i}" aria-pressed="${i===trioI}">${x.g}</button>`).join("");
+}
+$("#trioSizes").addEventListener("click", e => { const b = e.target.closest("[data-ti]"); if(!b) return; trioI = +b.dataset.ti; paintTrio(); });
+paintTrio();
+$("#trioAdd").addEventListener("click", e => { addToCart("trio", TRIO.sizes[trioI].w, 1, $(".trio-jars")); burst(e.currentTarget); });
 
 /* ---- cart drawer ---- */
 let step = "cart", lastFocus = null;
