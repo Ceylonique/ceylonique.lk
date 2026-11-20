@@ -118,7 +118,9 @@ nav.main a:hover{color:var(--on-cocoa);background:color-mix(in srgb, var(--on-co
 .btn-hero:hover{transform:translateY(-2px) rotate(-1deg)}
 .hero-price{opacity:.75;font-weight:600;padding-left:.6em;margin-left:.1em;border-left:1.5px solid currentColor;font-variant-numeric:tabular-nums}
 .hero .ctas .btn-ghost{color:var(--h-fg)}
-.hero-ship{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:7px 14px;border-radius:999px;background:color-mix(in srgb, var(--h-fg) 12%, transparent);color:var(--h-fg);font-weight:700;font-size:.92rem}
+.hero .ctas{align-items:flex-start}
+.cta-main{display:flex;flex-direction:column;gap:12px}
+.hero-ship{display:flex;justify-content:center;align-items:center;gap:8px;margin:0;padding:9px 14px;border-radius:999px;background:color-mix(in srgb, var(--h-fg) 12%, transparent);color:var(--h-fg);font-weight:700;font-size:.92rem}
 .hero-ship svg{width:20px;height:20px;flex:none}
 .hero-facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:30px;font-size:.88rem;font-weight:600;color:var(--h-muted)}
 .hero-facts span{display:inline-flex;align-items:center;gap:8px}
@@ -406,13 +408,15 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
         <p class="hero-desc" id="heroDesc"></p>
       </div>
       <div class="ctas">
+        <div class="cta-main">
         <button class="btn btn-hero" id="heroAdd">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           <span id="heroAddLabel">Add Original</span><span class="hero-price" id="heroPrice"></span></button>
+        <p class="hero-ship"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>Free shipping, all over Sri Lanka</p>
+        </div>
         <a class="btn btn-ghost" data-wa="greet" href="#" target="_blank" rel="noopener">
           <svg class="ico" viewBox="0 0 32 32" fill="currentColor"><use href="#wa-glyph"/></svg>Ask us</a>
       </div>
-      <p class="hero-ship"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>Free shipping, all over Sri Lanka</p>
       <div class="hero-facts">
         <span><i class="dot"></i>3 flavours</span>
         <span><i class="dot"></i>Founded by a food scientist</span>
