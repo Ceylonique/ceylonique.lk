@@ -118,6 +118,8 @@ nav.main a:hover{color:var(--on-cocoa);background:color-mix(in srgb, var(--on-co
 .btn-hero:hover{transform:translateY(-2px) rotate(-1deg)}
 .hero-price{opacity:.75;font-weight:600;padding-left:.6em;margin-left:.1em;border-left:1.5px solid currentColor;font-variant-numeric:tabular-nums}
 .hero .ctas .btn-ghost{color:var(--h-fg)}
+.hero-ship{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:7px 14px;border-radius:999px;background:color-mix(in srgb, var(--h-fg) 12%, transparent);color:var(--h-fg);font-weight:700;font-size:.92rem}
+.hero-ship svg{width:20px;height:20px;flex:none}
 .hero-facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:30px;font-size:.88rem;font-weight:600;color:var(--h-muted)}
 .hero-facts span{display:inline-flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--h-pop)}
@@ -410,6 +412,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
         <a class="btn btn-ghost" data-wa="greet" href="#" target="_blank" rel="noopener">
           <svg class="ico" viewBox="0 0 32 32" fill="currentColor"><use href="#wa-glyph"/></svg>Ask us</a>
       </div>
+      <p class="hero-ship"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>Free shipping, all over Sri Lanka</p>
       <div class="hero-facts">
         <span><i class="dot"></i>3 flavours</span>
         <span><i class="dot"></i>Founded by a food scientist</span>
@@ -441,7 +444,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
       <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13v6M26 13v6M9 10v12M23 10v12M9 16h14"/></svg>
         <div><h3>Protein rich</h3><p>A spoonful that keeps up with breakfasts, workouts and snacks.</p></div></li>
       <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M27 15.5A11 11 0 0 1 10.6 25L5 27l2-5.4A11 11 0 1 1 27 15.5z"/><path d="M12 13.5c0 3.5 3 6.5 6.5 6.5l1.5-2-2.5-1.5-1 1c-1-.4-2-1.4-2.4-2.4l1-1L13.5 11l-1.5 2.5z"/></svg>
-        <div><h3>Order on WhatsApp</h3><p>Fill your cart, send it in one tap, and we confirm delivery with you.</p></div></li>
+        <div><h3>Order on WhatsApp</h3><p>Fill your cart, send it in one tap, and we confirm your order. Free delivery island-wide.</p></div></li>
     </ul>
   </div>
 </section>
@@ -547,7 +550,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
     <div class="faq">
       <details><summary>How does checkout work?</summary><p>Add jars to your cart, enter your name, phone number and address, then tap "Send order on WhatsApp". WhatsApp opens with your full order already written. Press send and we'll reply to confirm.</p></details>
       <details><summary>How do I pay?</summary><p>We confirm your total and payment method with you on WhatsApp before we dispatch. You can tell us your preference at checkout.</p></details>
-      <details><summary>How much is delivery and where do you deliver?</summary><p>Delivery charges depend on your location. We confirm the delivery fee and timing with you on WhatsApp when we receive your order.</p></details>
+      <details><summary>How much is delivery and where do you deliver?</summary><p>Delivery is free, all over Sri Lanka. The shipping cost is already included in the jar price, so the price you see is the price you pay. We confirm delivery timing with you on WhatsApp when we receive your order.</p></details>
       <details><summary>Do I need WhatsApp to order?</summary><p>WhatsApp is the quickest way. If you can't use it, email us at ceyloniqueicon@gmail.com with your order and we'll take it from there.</p></details>
       <details><summary>How should I store my jar?</summary><p>Keep it closed in a cool, dry place away from direct sunlight, and always use a clean, dry spoon.</p></details>
     </div>
@@ -684,6 +687,10 @@ const PRODUCTS = [
     sizes:[{w:"300g",p:1770},{w:"600g",p:3540}] }
 ];
 const TRIO = { id:"trio", name:"The Trio", sizes:[{w:"3 × 300g", g:"300g", p:4950},{w:"3 × 600g", g:"600g", p:9900}] }; // bundle prices; the site shows the saving against 3 single jars of the same size
+/* Free island-wide delivery: Rs 450 per jar is built into every price. Edit the base prices above; this adds the shipping share. */
+const SHIPPING_PER_JAR = 450;
+PRODUCTS.forEach(p => p.sizes.forEach(z => { z.p += SHIPPING_PER_JAR; }));
+TRIO.sizes.forEach(z => { z.p += SHIPPING_PER_JAR * 3; });
 /* =============================================== */
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -837,7 +844,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#drawer
 
 function totalsHTML(){
   return `<div><span>Subtotal (${count()} ${count()===1?"jar":"items"})</span><span>${fmt(subtotal())}</span></div>
-    <div><small>Delivery</small><small>Confirmed on WhatsApp</small></div>
+    <div><span>Delivery</span><span><b style="color:var(--green,#1f8a5f)">FREE</b> <small>island-wide</small></span></div>
     <div class="grand"><span>Total</span><span>${fmt(subtotal())}</span></div>`;
 }
 function renderCart(){
@@ -917,8 +924,8 @@ Order ID: ${id}
 ${lines.join("\n")}
 
 Subtotal: ${fmt(subtotal())}
-Delivery: to be confirmed
-*Total: ${fmt(subtotal())}* (+ delivery)
+Delivery: FREE (island-wide)
+*Total: ${fmt(subtotal())}*
 
 *Customer*
 Name: ${d.cName}
