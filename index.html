@@ -370,6 +370,15 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
 .link-btn{background:none;border:0;padding:0;font-weight:700;text-decoration:underline;color:var(--ink);font-size:.9rem}
 </style>
 
+<script>
+/* Meta Pixel. Paste the pixel ID between the quotes to switch tracking on. Empty = off. */
+const PIXEL_ID = "";
+window.track = (e, p) => { try { if (window.fbq) fbq("track", e, p); } catch(_){} };
+if (PIXEL_ID) {
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+  fbq("init", PIXEL_ID); fbq("track", "PageView");
+}
+</script>
 </head><body>
 <div class="announce"><div class="wrap">Free delivery all over Sri Lanka. Just fill your cart and send us your order on WhatsApp.</div></div>
 
@@ -754,6 +763,7 @@ function addToCart(id, w, q, src){
   const k = keyOf(id, w), ex = cart.find(i => keyOf(i.id,i.w) === k);
   if (ex) ex.q = Math.min(ex.q + q, 99); else cart.push({ id, w, q });
   save(); renderCart();
+  { const inf = itemInfo({id,w}); track("AddToCart", { content_ids:[id], content_name:inf.name, content_type:"product", value:inf.p*q, currency:"LKR" }); }
   setTimeout(() => { const b = $("#cartBtn"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }, reduceMotion() ? 0 : 620);
   toast(`Added ${q} × ${itemInfo({id,w}).name} ${id==="trio"?"":w} to your cart`);
 }
@@ -822,6 +832,7 @@ function setStep(s){
   $$("[data-step]").forEach(el => el.hidden = el.dataset.step !== s);
   $("#dTitle").textContent = { cart:"Your cart", details:"Delivery details", send:"Send your order" }[s];
   $("#dBack").hidden = s === "cart";
+  if (s === "details") track("InitiateCheckout", { value:subtotal(), currency:"LKR", num_items:count() });
   const n = { cart:1, details:2, send:3 }[s];
   $$(".progress span").forEach(el => el.classList.toggle("on", +el.dataset.p <= n));
   const body = $(`.d-body[data-step="${s}"]`); if (body) body.scrollTop = 0;
@@ -939,7 +950,7 @@ Please confirm my order. Thank you so much!`;
   $("#msgPreview").textContent = orderText;
   $("#sendWa").href = waLink(orderText);
 }
-$("#sendWa").addEventListener("click", () => toast("Opening WhatsApp. Just press send there!"));
+$("#sendWa").addEventListener("click", () => { track("Lead", { value:subtotal(), currency:"LKR", content_name:"WhatsApp order" }); toast("Opening WhatsApp. Just press send there!"); });
 $("#copyMsg").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(orderText); toast("Order message copied"); }
   catch(e){ const r = document.createRange(); r.selectNodeContents($("#msgPreview")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Message selected. Copy it with your keyboard, or long-press on your phone."); }
@@ -1022,5 +1033,16 @@ paintJars(); renderProducts(); renderCart();
 const rerender = () => { renderProducts(); renderCart(); };
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", rerender);
 new MutationObserver(rerender).observe(document.documentElement, { attributes:true, attributeFilter:["data-theme"] });
+
+/* Ad links: ?add=original|chocolate|salted|trio &size=300|600 opens the cart with that jar in it */
+(function(){ try {
+  const q = new URLSearchParams(location.search), a = q.get("add"); if (!a) return;
+  const sz = (q.get("size") || "300").replace(/\D/g,"") + "g"; let w;
+  if (a === "trio") { const z = TRIO.sizes.find(z => z.g === sz) || TRIO.sizes[0]; w = z.w; }
+  else { const p = byId(a); if (!p) return; w = (p.sizes.find(s => s.w === sz) || p.sizes[0]).w; }
+  if (!cart.some(i => i.id === a && i.w === w)) addToCart(a, w, 1);
+  openDrawer("cart");
+  history.replaceState(null, "", location.pathname);
+} catch(e){} })();
 </script>
 </body></html>
