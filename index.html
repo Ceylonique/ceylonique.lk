@@ -531,7 +531,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
     <div class="steps">
       <div class="step"><b>1</b><h3>Fill your cart</h3><p>Choose your flavours, sizes and how many jars you want.</p></div>
       <div class="step"><b>2</b><h3>Add your details</h3><p>Your name, phone number and delivery address. That's all we need.</p></div>
-      <div class="step"><b>3</b><h3>Send on WhatsApp</h3><p>Your full order opens in WhatsApp, ready to send. We'll reply to confirm payment and delivery.</p></div>
+      <div class="step"><b>3</b><h3>Send on WhatsApp</h3><p>Your full order opens in WhatsApp, ready to send. We'll reply with our bank details and your delivery time.</p></div>
     </div>
   </div>
 </section>
@@ -557,7 +557,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
     <div class="sec-head"><div><p class="eyebrow">Quick answers</p><h2>Got questions?</h2></div></div>
     <div class="faq">
       <details><summary>How does checkout work?</summary><p>Add your jars to the cart, fill in your name, phone number and address, then tap "Send order on WhatsApp". Your order is already written for you in WhatsApp, so just press send and we'll get back to you to confirm.</p></details>
-      <details><summary>How do I pay?</summary><p>We'll confirm your total and how you'd like to pay on WhatsApp before we send your jars out. You can tell us your preference at checkout.</p></details>
+      <details><summary>How do I pay?</summary><p>We take bank transfer. After you send your order, we'll reply on WhatsApp with our bank details and your total. Once your payment arrives, we dispatch your jars.</p></details>
       <details><summary>Do you deliver, and what does it cost?</summary><p>Yes, and delivery is free all over Sri Lanka. It's already in the jar price, so the price you see is what you pay. Once we get your order, we'll message you on WhatsApp with your delivery time.</p></details>
       <details><summary>Do I need WhatsApp to order?</summary><p>WhatsApp is quickest. If you don't use it, email your order to ceyloniqueicon@gmail.com and we'll sort it out.</p></details>
       <details><summary>How should I store my jar?</summary><p>Keep the lid closed and store it somewhere cool and dry, out of direct sunlight. A clean, dry spoon every time helps it stay fresh.</p></details>
@@ -636,11 +636,9 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
           <option>Colombo</option><option>Gampaha</option><option>Kalutara</option><option>Kandy</option><option>Matale</option><option>Nuwara Eliya</option><option>Galle</option><option>Matara</option><option>Hambantota</option><option>Jaffna</option><option>Kilinochchi</option><option>Mannar</option><option>Vavuniya</option><option>Mullaitivu</option><option>Batticaloa</option><option>Ampara</option><option>Trincomalee</option><option>Kurunegala</option><option>Puttalam</option><option>Anuradhapura</option><option>Polonnaruwa</option><option>Badulla</option><option>Monaragala</option><option>Ratnapura</option><option>Kegalle</option>
         </select></div>
     </div>
-    <div class="field"><span style="font-weight:700;font-size:.9rem">Preferred payment</span>
-      <div class="seg">
-        <label><input type="radio" name="pay" id="payCod" value="Cash on delivery" checked> Cash on delivery</label>
-        <label><input type="radio" name="pay" id="payBank" value="Bank transfer"> Bank transfer</label>
-      </div>
+    <div class="field"><span style="font-weight:700;font-size:.9rem">Payment</span>
+      <input type="radio" name="pay" id="payBank" value="Bank transfer" checked hidden>
+      <p class="note" style="margin:.35rem 0 0">Bank transfer. We'll send you our bank details on WhatsApp, and we dispatch your jars once your payment arrives.</p>
     </div>
     <div class="field"><label for="cNotes">Order notes <span>(optional)</span></label><textarea id="cNotes" name="notes" rows="2" placeholder="Gift message, best time to call, a nearby landmark"></textarea></div>
     <p class="note">We use these details only to deliver your order.</p>
