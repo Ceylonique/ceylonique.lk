@@ -531,7 +531,7 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
     <div class="steps">
       <div class="step"><b>1</b><h3>Fill your cart</h3><p>Choose your flavours, sizes and how many jars you want.</p></div>
       <div class="step"><b>2</b><h3>Add your details</h3><p>Your name, phone number and delivery address. That's all we need.</p></div>
-      <div class="step"><b>3</b><h3>Send on WhatsApp</h3><p>Your full order opens in WhatsApp, ready to send. We'll reply with our bank details and your delivery time.</p></div>
+      <div class="step"><b>3</b><h3>Send on WhatsApp</h3><p>Your full order opens in WhatsApp, ready to send. We'll reply to confirm your order and delivery time.</p></div>
     </div>
   </div>
 </section>
@@ -557,7 +557,6 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
     <div class="sec-head"><div><p class="eyebrow">Quick answers</p><h2>Got questions?</h2></div></div>
     <div class="faq">
       <details><summary>How does checkout work?</summary><p>Add your jars to the cart, fill in your name, phone number and address, then tap "Send order on WhatsApp". Your order is already written for you in WhatsApp, so just press send and we'll get back to you to confirm.</p></details>
-      <details><summary>How do I pay?</summary><p>We take bank transfer. After you send your order, we'll reply on WhatsApp with our bank details and your total. Once your payment arrives, we dispatch your jars.</p></details>
       <details><summary>Do you deliver, and what does it cost?</summary><p>Yes, and delivery is free all over Sri Lanka. It's already in the jar price, so the price you see is what you pay. Once we get your order, we'll message you on WhatsApp with your delivery time.</p></details>
       <details><summary>Do I need WhatsApp to order?</summary><p>WhatsApp is quickest. If you don't use it, email your order to ceyloniqueicon@gmail.com and we'll sort it out.</p></details>
       <details><summary>How should I store my jar?</summary><p>Keep the lid closed and store it somewhere cool and dry, out of direct sunlight. A clean, dry spoon every time helps it stay fresh.</p></details>
@@ -635,10 +634,6 @@ body.has-bar .wa-float{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
         <select id="cDistrict" name="district">
           <option>Colombo</option><option>Gampaha</option><option>Kalutara</option><option>Kandy</option><option>Matale</option><option>Nuwara Eliya</option><option>Galle</option><option>Matara</option><option>Hambantota</option><option>Jaffna</option><option>Kilinochchi</option><option>Mannar</option><option>Vavuniya</option><option>Mullaitivu</option><option>Batticaloa</option><option>Ampara</option><option>Trincomalee</option><option>Kurunegala</option><option>Puttalam</option><option>Anuradhapura</option><option>Polonnaruwa</option><option>Badulla</option><option>Monaragala</option><option>Ratnapura</option><option>Kegalle</option>
         </select></div>
-    </div>
-    <div class="field"><span style="font-weight:700;font-size:.9rem">Payment</span>
-      <input type="radio" name="pay" id="payBank" value="Bank transfer" checked hidden>
-      <p class="note" style="margin:.35rem 0 0">Bank transfer. We'll send you our bank details on WhatsApp, and we dispatch your jars once your payment arrives.</p>
     </div>
     <div class="field"><label for="cNotes">Order notes <span>(optional)</span></label><textarea id="cNotes" name="notes" rows="2" placeholder="Gift message, best time to call, a nearby landmark"></textarea></div>
     <p class="note">We use these details only to deliver your order.</p>
@@ -895,7 +890,6 @@ const phoneOk = v => /^(?:\+?94|0)?7\d{8}$/.test(normPhone(v));
 let details = {};
 try { details = JSON.parse(localStorage.getItem("cq-details") || "{}"); } catch(e){}
 ["cName","cPhone","cAddress","cCity","cDistrict","cNotes"].forEach(id => { if (details[id]) $("#"+id).value = details[id]; });
-if (details.pay === "Bank transfer") $("#payBank").checked = true;
 
 $("#detailsForm").addEventListener("submit", e => {
   e.preventDefault();
@@ -908,7 +902,7 @@ $("#detailsForm").addEventListener("submit", e => {
   let first = null;
   checks.forEach(([id, ok]) => { $("#"+id).classList.toggle("invalid", !ok); if (!ok && !first) first = id; });
   if (first){ $(`#${first} input, #${first} textarea`).focus(); return; }
-  const d = { cName:$("#cName").value.trim(), cPhone:$("#cPhone").value.trim(), cAddress:$("#cAddress").value.trim(), cCity:$("#cCity").value.trim(), cDistrict:$("#cDistrict").value, cNotes:$("#cNotes").value.trim(), pay:document.querySelector('input[name="pay"]:checked').value };
+  const d = { cName:$("#cName").value.trim(), cPhone:$("#cPhone").value.trim(), cAddress:$("#cAddress").value.trim(), cCity:$("#cCity").value.trim(), cDistrict:$("#cDistrict").value, cNotes:$("#cNotes").value.trim() };
   try { localStorage.setItem("cq-details", JSON.stringify(d)); } catch(e){}
   buildOrder(d);
   setStep("send");
@@ -938,7 +932,7 @@ Delivery: FREE (island-wide)
 Name: ${d.cName}
 Phone: ${d.cPhone}
 Address: ${d.cAddress}, ${d.cCity}, ${d.cDistrict} District
-Payment: ${d.pay}${d.cNotes ? `\nNotes: ${d.cNotes}` : ""}
+Notes: ${d.cNotes || "none"}
 
 Please confirm my order. Thank you so much!`;
   $("#orderId").textContent = id;
